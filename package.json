@@ -1,0 +1,20 @@
+{
+  "name": "sports-facilities-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusJoana/sports-facilities-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesusJoana/sports-facilities-api/issues"
+  },
+  "homepage": "https://github.com/jesusJoana/sports-facilities-api#readme"
+}
