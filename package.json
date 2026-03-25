@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "jest"
+    "dev": "nodemon src/server.js"
   },
   "jest": {
     "testEnvironment": "node"
@@ -25,7 +24,9 @@
   "homepage": "https://github.com/jesusJoana/sports-facilities-api#readme",
   "dependencies": {
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "jest": "^30.3.0",
