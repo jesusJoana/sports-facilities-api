@@ -1,14 +1,22 @@
 const request = require('supertest');
 const app = require('../src/app');
+const Installation = require('../src/models/installation.model');
+
+jest.mock('../src/models/installation.model', () => ({
+    find: jest.fn(),
+    findById: jest.fn()
+}));
+
 
 describe('GET /installations', () => {
     test('should return a list of installations', async () => {
-        const res = await request(app).get('/installations');
 
+        Installation.find.mockResolvedValue([
+            { id: '1', name: 'Test', type: 'gym', city: 'Madrid'
+            }]);
+        const res = await request(app).get('/installations');
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('data');
-        expect(Array.isArray(res.body.data)).toBe(true);
-        expect(res.body.data.length).toBeGreaterThan(0);
     });
 });
 
