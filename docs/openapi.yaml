@@ -120,5 +120,3 @@ components:
         message:
           type: string
           example: Installation not found
-
-
