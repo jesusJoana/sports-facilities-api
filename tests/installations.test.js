@@ -5,9 +5,9 @@ jest.mock('../src/models/installation.model', () => ({
     find: jest.fn(),
     findById: jest.fn(),
     create: jest.fn(),
-    findByIdAndUpdate: jest.fn()
+    findByIdAndUpdate: jest.fn(),
+    findByIdAndDelete: jest.fn()
 }));
-
 
 const Installation = require('../src/models/installation.model');
 
@@ -147,6 +147,38 @@ describe('PUT /installations/:id', () => {
             message: 'Installation not found'
         });
     });
+});
+
+describe('DELETE /installations/:id', () => {
+
+    test('should delete an existing installation', async () => {
+        Installation.findByIdAndDelete.mockResolvedValue({
+            id: '1',
+            name: 'Test',
+            type: 'gym',
+            city: 'Madrid'
+        });
+
+        const res = await request(app).delete('/installations/1');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual({
+            message: 'Installation deleted successfully'
+        });
+    });
+
+    test('should return 404 if installation does not exist', async () => {
+        Installation.findByIdAndDelete.mockResolvedValue(null);
+
+        const res = await request(app).delete('/installations/999');
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body).toEqual({
+            status: 404,
+            message: 'Installation not found'
+        });
+    });
 
 });
+
 

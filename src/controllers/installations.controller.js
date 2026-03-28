@@ -67,9 +67,27 @@ const updateInstallation = async (req, res) => {
     res.status(200).json({ data: installation });
 };
 
+const deleteInstallation = async (req, res) => {
+    const { id } = req.params;
+
+    const installation = await Installation.findByIdAndDelete(id);
+
+    if (!installation) {
+        return res.status(404).json({
+            status: 404,
+            message: 'Installation not found'
+        });
+    }
+
+    res.status(200).json({
+        message: 'Installation deleted successfully'
+    });
+};
+
 module.exports = {
     getAllInstallations,
     getInstallationById,
     createInstallation,
-    updateInstallation
+    updateInstallation,
+    deleteInstallation
 };
