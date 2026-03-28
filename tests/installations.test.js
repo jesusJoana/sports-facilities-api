@@ -178,7 +178,21 @@ describe('DELETE /installations/:id', () => {
             message: 'Installation not found'
         });
     });
-
 });
 
+describe('GET /installations', () => {
+    test('should return filtered installations by city', async () => {
+        Installation.find.mockResolvedValue([
+            { id: '1', name: 'Test Madrid', type: 'gym', city: 'Madrid' }
+        ]);
 
+        const res = await request(app).get('/installations?city=Madrid');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('data');
+        expect(Array.isArray(res.body.data)).toBe(true);
+        expect(res.body.data.length).toBe(1);
+        expect(res.body.data[0]).toHaveProperty('city', 'Madrid');
+        expect(Installation.find).toHaveBeenCalledWith({ city: 'Madrid' });
+    });
+});

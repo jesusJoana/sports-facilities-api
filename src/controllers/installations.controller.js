@@ -1,8 +1,12 @@
 const Installation = require('../models/installation.model');
 
 const getAllInstallations = async (req, res) => {
-    const installations = await Installation.find();
-
+    const { city } = req.query;
+    const filter = {};
+    if (city) {
+        filter.city = city;
+    }
+    const installations = await Installation.find(filter);
     res.status(200).json({ data: installations });
 };
 
