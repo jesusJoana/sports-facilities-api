@@ -195,4 +195,41 @@ describe('GET /installations', () => {
         expect(res.body.data[0]).toHaveProperty('city', 'Madrid');
         expect(Installation.find).toHaveBeenCalledWith({ city: 'Madrid' });
     });
+
+    test('should return filtered installations by type', async () => {
+        Installation.find.mockResolvedValue([
+            { id: '1', name: 'Gym Test', type: 'gym', city: 'Madrid' }
+        ]);
+
+        const res = await request(app).get('/installations?type=gym');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('data');
+        expect(res.body.data.length).toBe(1);
+        expect(res.body.data[0]).toHaveProperty('type', 'gym');
+        expect(Installation.find).toHaveBeenCalledWith({ type: 'gym' });
+    });
+
+    test('should return filtered installations by sport', async () => {
+        Installation.find.mockResolvedValue([
+            {
+                id: '1',
+                name: 'Polideportivo Madrid',
+                type: 'polideportivo',
+                city: 'Madrid',
+                sports: [
+                    { sportId: '507f1f77bcf86cd799439011', name: 'Baloncesto' }
+                ]
+            }
+        ]);
+
+        const res = await request(app).get('/installations?sport=Baloncesto');
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('data');
+        expect(res.body.data.length).toBe(1);
+        expect(res.body.data[0]).toHaveProperty('sports');
+        expect(Installation.find).toHaveBeenCalledWith({ 'sports.name': 'Baloncesto' });
+    });
+
 });

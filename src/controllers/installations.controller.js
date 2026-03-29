@@ -1,16 +1,28 @@
 const Installation = require('../models/installation.model');
 
 const getAllInstallations = async (req, res) => {
-    const { city } = req.query;
+    const { city, type, sport } = req.query;
+
     const filter = {};
+
     if (city) {
         filter.city = city;
     }
+
+    if (type) {
+        filter.type = type;
+    }
+
+    if (sport) {
+        filter['sports.name'] = sport;
+    }
+
     const installations = await Installation.find(filter);
+
     res.status(200).json({ data: installations });
 };
 
-const getInstallationById = async (req, res) => {
+    const getInstallationById = async (req, res) => {
     const { id } = req.params;
 
     const installation = await Installation.findById(id);
@@ -26,7 +38,16 @@ const getInstallationById = async (req, res) => {
 };
 
 const createInstallation = async (req, res) => {
-    const { name, type, city } = req.body;
+    const {
+        name,
+        type,
+        city,
+        sports,
+        location,
+        externalId,
+        source,
+        lastUpdated
+    } = req.body;
 
     if (!name || !type || !city) {
         return res.status(400).json({
@@ -38,15 +59,30 @@ const createInstallation = async (req, res) => {
     const installation = await Installation.create({
         name,
         type,
-        city
+        city,
+        sports,
+        location,
+        externalId,
+        source,
+        lastUpdated
     });
 
     res.status(201).json({ data: installation });
 };
 
+
 const updateInstallation = async (req, res) => {
     const { id } = req.params;
-    const { name, type, city } = req.body;
+    const {
+        name,
+        type,
+        city,
+        sports,
+        location,
+        externalId,
+        source,
+        lastUpdated
+    } = req.body;
 
     if (!name || !type || !city) {
         return res.status(400).json({
@@ -57,7 +93,16 @@ const updateInstallation = async (req, res) => {
 
     const installation = await Installation.findByIdAndUpdate(
         id,
-        { name, type, city },
+        {
+            name,
+            type,
+            city,
+            sports,
+            location,
+            externalId,
+            source,
+            lastUpdated
+        },
         { new: true }
     );
 
@@ -70,6 +115,7 @@ const updateInstallation = async (req, res) => {
 
     res.status(200).json({ data: installation });
 };
+
 
 const deleteInstallation = async (req, res) => {
     const { id } = req.params;
